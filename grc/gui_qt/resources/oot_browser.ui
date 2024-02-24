@@ -59,7 +59,7 @@
           </font>
          </property>
          <property name="text">
-          <string>gr-example v0.0.0</string>
+          <string>gr-example</string>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
@@ -119,6 +119,13 @@
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="version_label">
+             <property name="text">
+              <string>Version</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QLabel" name="tags_label">
              <property name="text">

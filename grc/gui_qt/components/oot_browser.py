@@ -77,7 +77,8 @@ class OOTBrowser(QtWidgets.QDialog, base.Component):
     def populate_right_view(self):
         module = self.left_list.currentItem().data(self.data_role)
 
-        self.title_label.setText(f"{module.get('title')} {module.get('version') if 'version' in module else ''}")
+        self.title_label.setText(f"{module.get('title')}")
+        self.version_label.setText(f"<b>Version:</b> {module.get('version')}")
         self.brief_label.setText(module.get("brief"))
         self.website_label.setText(f"<b>Website:</b> {module.get('website')}")
         if module.get("dependencies"):
