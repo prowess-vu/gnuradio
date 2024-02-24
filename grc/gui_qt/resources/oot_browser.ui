@@ -107,7 +107,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>cgran_no_logo.png</pixmap>
+            <pixmap>cgran_logo.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
