@@ -95,7 +95,7 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <item>
+         <item alignment="Qt::AlignTop">
           <widget class="QLabel" name="icon">
            <property name="maximumSize">
             <size>
