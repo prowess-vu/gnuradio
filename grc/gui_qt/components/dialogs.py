@@ -1,11 +1,14 @@
 from __future__ import absolute_import, print_function
 
+from copy import copy
+
 from ..Constants import MIN_DIALOG_HEIGHT, DEFAULT_PARAM_TAB
 from qtpy.QtCore import Qt
 from qtpy.QtGui import QStandardItem, QStandardItemModel
 from qtpy.QtWidgets import (QLineEdit, QDialog, QDialogButtonBox, QTreeView,
                             QVBoxLayout, QTabWidget, QGridLayout, QWidget, QLabel,
-                            QPushButton, QListWidget, QComboBox, QPlainTextEdit, QHBoxLayout)
+                            QPushButton, QListWidget, QComboBox, QPlainTextEdit, QHBoxLayout,
+                            QFileDialog, QApplication)
 
 
 class ErrorsDialog(QDialog):
@@ -56,6 +59,7 @@ class PropsDialog(QDialog):
         super().__init__()
         self.setMinimumSize(600, 400)
         self._block = parent_block
+        self.qsettings = QApplication.instance().qsettings
         self.setModal(True)
         self.force_show_id = force_show_id
 
@@ -117,10 +121,25 @@ class PropsDialog(QDialog):
                         qvb.addWidget(line_edit, i, 1)
                         self.edit_params.append(line_edit)
                     elif param.dtype == "_multiline_python_external":
+                        ext_param = copy(param)
+                        def open_editor(widget=None):
+                            self._block.parent_flowgraph.gui.install_external_editor(
+                                ext_param)
+
+                        def open_chooser(widget=None):
+                            self._block.parent_flowgraph.gui.remove_external_editor(param=ext_param)
+                            editor, filtr = QFileDialog.getOpenFileName(
+                                self,
+                            )
+                            self.qsettings.setValue("grc/editor", editor)
                         editor_widget = QWidget()
                         editor_widget.setLayout(QHBoxLayout())
-                        editor_widget.layout().addWidget(QPushButton("Open in Editor"))
-                        editor_widget.layout().addWidget(QPushButton("Choose Editor"))
+                        open_editor_button = QPushButton("Open in Editor")
+                        open_editor_button.clicked.connect(open_editor)
+                        choose_editor_button = QPushButton("Choose Editor")
+                        choose_editor_button.clicked.connect(open_chooser)
+                        editor_widget.layout().addWidget(open_editor_button)
+                        editor_widget.layout().addWidget(choose_editor_button)
                         line_edit = QPlainTextEdit(param.value)
                         line_edit.param = param
                         qvb.addWidget(editor_widget, i, 1)

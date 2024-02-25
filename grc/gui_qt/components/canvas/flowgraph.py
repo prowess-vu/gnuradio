@@ -19,9 +19,11 @@ from __future__ import absolute_import, print_function
 
 # Standard modules
 import logging
+import functools
 
 from qtpy import QtGui, QtCore, QtWidgets, QT6
 from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QApplication
 
 from itertools import count
 
@@ -32,6 +34,7 @@ from .port import GUIPort
 from ... import base
 from ....core.FlowGraph import FlowGraph as CoreFlowgraph
 from ... import Utils
+from ...external_editor import ExternalEditor
 
 from .block import GUIBlock
 
@@ -66,6 +69,9 @@ class FlowgraphScene(QtWidgets.QGraphicsScene, base.Component):
         self.dummy_arrow = None
         self.start_port = None
         self._elements_to_draw = []
+        self._external_updaters = {}
+
+        self.qsettings = QApplication.instance().qsettings
 
         if QT6:
             self.undoStack = QtGui.QUndoStack(self)
@@ -479,3 +485,45 @@ class FlowgraphScene(QtWidgets.QGraphicsScene, base.Component):
     def itemsBoundingRect(self):
         rect = QtWidgets.QGraphicsScene.itemsBoundingRect(self)
         return QtCore.QRectF(0.0, 0.0, rect.right(), rect.bottom())
+
+    def install_external_editor(self, param, parent=None):
+        target = (param.parent_block.name, param.key)
+
+        if target in self._external_updaters:
+            editor = self._external_updaters[target]
+        else:
+            editor = self.qsettings.value("grc/editor", "")
+            if not editor:
+                return
+            updater = functools.partial(
+                self.handle_external_editor_change, target=target)
+            editor = self._external_updaters[target] = ExternalEditor(
+                editor=editor,
+                name=target[0], value=param.get_value(),
+                callback=updater
+            )
+            editor.start()
+        try:
+            editor.open_editor()
+        except Exception as e:
+            # Problem launching the editor. Need to select a new editor.
+            log.error('Error opening an external editor. Please select a different editor.\n')
+            # Reset the editor to force the user to select a new one.
+            self.parent_platform.config.editor = ''
+            self.remove_external_editor(target=target)
+
+    def remove_external_editor(self, target=None, param=None):
+        if target is None:
+            target = (param.parent_block.name, param.key)
+        if target in self._external_updaters:
+            self._external_updaters[target].stop()
+            del self._external_updaters[target]
+
+    def handle_external_editor_change(self, new_value, target):
+        try:
+            block_id, param_key = target
+            self.core.get_block(block_id).params[param_key].set_value(new_value)
+
+        except (IndexError, ValueError):  # block no longer exists
+            self.remove_external_editor(target=target)
+            return
