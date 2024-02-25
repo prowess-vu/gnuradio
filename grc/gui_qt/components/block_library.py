@@ -64,8 +64,11 @@ class LibraryView(QTreeView):
         self.library = parent.parent()
         self.contextMenu = QMenu()
         self.example_action = QAction("Examples...")
-        self.contextMenu.addAction(self.example_action)
+        self.add_to_fg_action = QAction("Add to flowgraph")
         self.example_action.triggered.connect(self.view_examples)
+        self.add_to_fg_action.triggered.connect(self.add_block)
+        self.contextMenu.addAction(self.example_action)
+        self.contextMenu.addAction(self.add_to_fg_action)
 
     # TODO: Use selectionChanged() or something instead
     # so we can use arrow keys too
@@ -93,6 +96,10 @@ class LibraryView(QTreeView):
     def view_examples(self):
         key = self.model().data(self.currentIndex(), Qt.UserRole)
         self.library.app.MainWindow.example_browser_triggered(key_filter=key)
+
+    def add_block(self) -> None:
+        key = self.model().data(self.currentIndex(), Qt.UserRole)
+        self.library.add_block(key)
 
 
 class BlockLibrary(QDockWidget, base.Component):
