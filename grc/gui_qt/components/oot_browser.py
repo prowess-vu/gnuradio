@@ -80,12 +80,18 @@ class OOTBrowser(QtWidgets.QDialog, base.Component):
         self.title_label.setText(f"{module.get('title')}")
         self.version_label.setText(f"<b>Version:</b> {module.get('version')}")
         self.brief_label.setText(module.get("brief"))
-        self.website_label.setText(f"<b>Website:</b> {module.get('website')}")
+        if module.get('website'):
+            self.website_label.setText(f"**Website:** {module.get('website')}")
+        else:
+            self.website_label.setText(f'**Website:** None')
         if module.get("dependencies"):
             self.dep_label.setText(f"<b>Dependencies:</b> {'; '.join(module.get('dependencies'))}")
         else:
             self.dep_label.setText("<b>Dependencies:</b> None")
-        self.repo_label.setText(f"<b>Repository:</b> {module.get('repo')}")
+        if module.get('repo'):
+            self.repo_label.setText(f"**Repository:** {module.get('repo')}")
+        else:
+            self.repo_label.setText(f'**Repository:** None')
         if module.get("copyright_owner"):
             self.copyright_label.setText(f"<b>Copyright Owner:</b> {', '.join(module.get('copyright_owner'))}")
         else:
@@ -99,4 +105,4 @@ class OOTBrowser(QtWidgets.QDialog, base.Component):
         self.tags_label.setText(f"<b>Tags:</b> {'; '.join(module.get('tags'))}")
         self.license_label.setText(f"<b>License:</b> {module.get('license')}")
         self.desc_label.setMarkdown("\n" + module.get("description").replace("\t", ""))
-        self.author_label.setText(f"<b>Author(s):</b> {', '.join(module.get('author'))}")
+        self.author_label.setText(f"**Author(s):** {', '.join(module.get('author'))}")
