@@ -1134,9 +1134,12 @@ class MainWindow(QtWidgets.QMainWindow, base.Component):
 
     def delete_triggered(self):
         log.debug("delete")
+        self.currentFlowgraphScene.set_saved(False)
+        self.tabWidget.tabBar().setTabTextColor(self.tabWidget.currentIndex(), Qt.red)
         action = DeleteElementAction(self.currentFlowgraphScene)
         self.currentFlowgraphScene.undoStack.push(action)
         self.updateActions()
+        self.currentFlowgraphScene.update()
 
     def select_all_triggered(self):
         log.debug("select_all")
