@@ -1013,7 +1013,7 @@ class MainWindow(QtWidgets.QMainWindow, base.Component):
         else:
             log.debug("Cancelled Save Copy action")
 
-    def close_triggered(self, tab_index=False) -> Union[str, bool]:
+    def close_triggered(self, tab_index=None) -> Union[str, bool]:
         """
         Closes a tab.
 
@@ -1026,7 +1026,7 @@ class MainWindow(QtWidgets.QMainWindow, base.Component):
         log.debug(f"Closing a tab (index {tab_index})")
 
         file_path = self.currentFlowgraphScene.filename
-        if not tab_index:
+        if tab_index is None:
             tab_index = self.tabWidget.currentIndex()
 
         if self.currentFlowgraphScene.saved:
