@@ -406,14 +406,14 @@ class FlowgraphScene(QtWidgets.QGraphicsScene, base.Component):
         # get connections between selected blocks
         connections = list(
             filter(
-                lambda c: c.source_block in g_blocks and c.sink_block in g_blocks,
+                lambda c: c.source_block.gui in g_blocks and c.sink_block.gui in g_blocks,
                 self.core.connections,
             )
         )
         clipboard = (
             (x_min, y_min),
             [g_block.core.export_data() for g_block in g_blocks],
-            [connection.core.export_data() for connection in connections],
+            [c_connection.export_data() for c_connection in connections],
         )
         return clipboard
 
@@ -479,8 +479,9 @@ class FlowgraphScene(QtWidgets.QGraphicsScene, base.Component):
         for src_block, src_port, dst_block, dst_port in connections_n:
             source = pasted_blocks[src_block].get_source(src_port)
             sink = pasted_blocks[dst_block].get_sink(dst_port)
-            connection = self.connect(source, sink)
-            connection.setSelected(True)
+            connection = self.core.connect(source, sink)
+            self.addItem(connection.gui)
+            connection.gui.setSelected(True)
 
     def itemsBoundingRect(self):
         rect = QtWidgets.QGraphicsScene.itemsBoundingRect(self)
