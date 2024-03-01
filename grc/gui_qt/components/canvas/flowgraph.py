@@ -37,6 +37,7 @@ from ... import Utils
 from ...external_editor import ExternalEditor
 
 from .block import GUIBlock
+from .connection import GUIConnection
 
 # Logging
 log = logging.getLogger(f"grc.application.{__name__}")
@@ -223,14 +224,14 @@ class FlowgraphScene(QtWidgets.QGraphicsScene, base.Component):
     def selected_blocks(self) -> list[GUIBlock]:
         blocks = []
         for item in self.selectedItems():
-            if item.core.is_block:
+            if isinstance(item, GUIBlock):
                 blocks.append(item)
         return blocks
 
     def selected_connections(self):
         conns = []
         for item in self.selectedItems():
-            if item.core.is_connection:
+            if isinstance(item, GUIConnection):
                 conns.append(item)
         return conns
 
