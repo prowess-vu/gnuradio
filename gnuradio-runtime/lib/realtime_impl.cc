@@ -60,9 +60,10 @@ static int rescale_virtual_pri(int virtual_pri, int min_real_pri, int max_real_p
 namespace gr {
 namespace realtime {
 
-rt_status_t enable_realtime_scheduling(rt_sched_param p)
+rt_status_t enable_realtime_scheduling(rt_sched_policy pol)
 {
     // set the priority class on the process
+    rt_sched_param p(s_rt_priority_default, pol);
     int pri_class = (true) ? REALTIME_PRIORITY_CLASS : NORMAL_PRIORITY_CLASS;
     if (SetPriorityClass(GetCurrentProcess(), pri_class) == 0)
         return RT_OTHER_ERROR;
@@ -90,8 +91,9 @@ rt_status_t enable_realtime_scheduling(rt_sched_param p)
 namespace gr {
 namespace realtime {
 
-rt_status_t enable_realtime_scheduling(rt_sched_param p)
+rt_status_t enable_realtime_scheduling(rt_sched_policy pol)
 {
+    rt_sched_param p(s_rt_priority_default, pol);
     int policy = p.policy == RT_SCHED_FIFO ? SCHED_FIFO : SCHED_RR;
     int min_real_pri = sched_get_priority_min(policy);
     int max_real_pri = sched_get_priority_max(policy);
@@ -127,8 +129,9 @@ rt_status_t enable_realtime_scheduling(rt_sched_param p)
 namespace gr {
 namespace realtime {
 
-rt_status_t enable_realtime_scheduling(rt_sched_param p)
+rt_status_t enable_realtime_scheduling(rt_sched_policy pol)
 {
+    rt_sched_param p(s_rt_priority_default, pol);
     int policy = p.policy == RT_SCHED_FIFO ? SCHED_FIFO : SCHED_RR;
     int min_real_pri = sched_get_priority_min(policy);
     int max_real_pri = sched_get_priority_max(policy);
@@ -163,7 +166,7 @@ rt_status_t enable_realtime_scheduling(rt_sched_param p)
 namespace gr {
 namespace realtime {
 
-rt_status_t enable_realtime_scheduling(rt_sched_param p) { return RT_NOT_IMPLEMENTED; }
+rt_status_t enable_realtime_scheduling(rt_sched_policy pol) { return RT_NOT_IMPLEMENTED; }
 
 } // namespace realtime
 } // namespace gr

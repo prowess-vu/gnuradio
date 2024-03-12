@@ -59,7 +59,7 @@ struct GR_RUNTIME_API rt_sched_param {
  * scheduling, it's possible to hang the system.
  */
 
-GR_RUNTIME_API rt_status_t enable_realtime_scheduling(rt_sched_param = rt_sched_param());
+GR_RUNTIME_API rt_status_t enable_realtime_scheduling(rt_sched_policy policy);
 
 } /* namespace realtime */
 } /* namespace gr */

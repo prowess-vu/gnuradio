@@ -17,9 +17,9 @@
 
 namespace gr {
 
-rt_status_t enable_realtime_scheduling()
+rt_status_t enable_realtime_scheduling(rt_sched_policy policy)
 {
-    return gr::realtime::enable_realtime_scheduling();
+    return gr::realtime::enable_realtime_scheduling(policy);
 }
 
 } /* namespace gr */

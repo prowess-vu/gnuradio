@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(realtime.h)                                        */
-/* BINDTOOL_HEADER_FILE_HASH(4fe8778231103a1a91b8032daec80655)                     */
+/* BINDTOOL_HEADER_FILE_HASH(9a6b2244bfb6c2791f6d161fd64ade41)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
@@ -42,5 +42,6 @@ void bind_realtime(py::module& m)
 
     m.def("enable_realtime_scheduling",
           &::gr::enable_realtime_scheduling,
+          py::arg("policy"),
           D(enable_realtime_scheduling));
 }

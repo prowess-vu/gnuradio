@@ -26,7 +26,7 @@ enum rt_sched_policy {
  * \brief If possible, enable high-priority "real time" scheduling.
  * \ingroup misc
  */
-GR_RUNTIME_API rt_status_t enable_realtime_scheduling();
+GR_RUNTIME_API rt_status_t enable_realtime_scheduling(rt_sched_policy policy);
 
 } /* namespace gr */
 
