@@ -54,7 +54,12 @@ block::block(const std::string& name,
       d_max_output_buffer(std::max(output_signature->max_streams(), 1), -1),
       d_min_output_buffer(std::max(output_signature->max_streams(), 1), -1),
       d_pmt_done(pmt::intern("done")),
-      d_system_port(pmt::intern("system"))
+      d_system_port(pmt::intern("system")),
+      d_edf_enabled(false),
+      d_edf_reclaim_bandwidth(false),
+      d_edf_runtime_ns(0),
+      d_edf_deadline_ns(0),
+      d_edf_period_ns(0)
 {
     global_block_registry.register_primitive(d_symbol_name, this);
     message_port_register_in(d_system_port);
@@ -306,6 +311,19 @@ void block::unset_processor_affinity()
     if (d_detail) {
         d_detail->unset_processor_affinity();
     }
+}
+
+int block::enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    d_edf_enabled = true;
+    d_edf_runtime_ns = runtime_ns;
+    d_edf_deadline_ns = deadline_ns;
+    d_edf_period_ns = period_ns;
+    d_edf_reclaim_bandwidth = reclaim_bandwidth;
+    if (d_detail) {
+        return d_detail->enable_edf(runtime_ns, deadline_ns, period_ns, reclaim_bandwidth);
+    }
+    return 0;
 }
 
 int block::active_thread_priority()

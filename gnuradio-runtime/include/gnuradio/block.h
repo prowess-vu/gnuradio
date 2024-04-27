@@ -728,6 +728,16 @@ public:
     std::vector<int> processor_affinity() override { return d_affinity; }
 
     /*!
+     * \brief Set the thread's EDF scheduling details.
+     */
+    int enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth) override;
+
+    /*!
+     * \brief Get EDF scheduling details for the thread.
+     */
+    std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> edf_details() override { return { d_edf_enabled, d_edf_runtime_ns, d_edf_deadline_ns, d_edf_period_ns, d_edf_reclaim_bandwidth }; }
+
+    /*!
      * \brief Get the current thread priority in use
      */
     int active_thread_priority();
@@ -801,6 +811,11 @@ private:
     bool d_pc_rpc_set;
     bool d_update_rate; // should sched update rel rate?
     bool d_finished;    // true if msg ports think we are finished
+    bool d_edf_enabled;  // true if EDF scheduling should be used
+    bool d_edf_reclaim_bandwidth;  // true if EDF "reclaim bandwidth" flag should be set
+    uint64_t d_edf_runtime_ns;  // EDF runtime in nanoseconds
+    uint64_t d_edf_deadline_ns;  // EDF deadline in nanoseconds
+    uint64_t d_edf_period_ns;  // EDF period in nanoseconds
 
 protected:
     block(void) {} // allows pure virtual interface sub-classes

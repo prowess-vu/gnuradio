@@ -40,6 +40,12 @@ void bind_thread(py::module& m)
               gr::thread_bind_to_processor,
           py::arg("thread"),
           py::arg("n"));
+    m.def("thread_enable_edf",
+          &gr::thread_enable_edf,
+          py::arg("runtime_ns"),
+          py::arg("deadline_ns"),
+          py::arg("period_ns"),
+          py::arg("reclaim_bandwidth"));
     m.def("thread_unbind", (void (*)()) & gr::thread_unbind);
     m.def("thread_unbind",
           (void (*)(gr::thread::gr_thread_t)) & gr::thread_unbind,

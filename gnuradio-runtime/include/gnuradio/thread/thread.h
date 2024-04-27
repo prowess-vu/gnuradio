@@ -17,6 +17,7 @@
 #include <boost/thread/locks.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
+#include <cstdint>
 #include <memory>
 #include <vector>
 
@@ -111,6 +112,10 @@ GR_RUNTIME_API void thread_bind_to_processor(gr_thread_t thread,
  * use in this fashion).
  */
 GR_RUNTIME_API void thread_bind_to_processor(gr_thread_t thread, unsigned int n);
+
+/*! \brief Convenience function to change the scheduling algorithm of a thread to EDF.
+*/
+GR_RUNTIME_API int thread_enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth);
 
 /*! \brief Remove any thread-processor affinity for the current thread.
  *

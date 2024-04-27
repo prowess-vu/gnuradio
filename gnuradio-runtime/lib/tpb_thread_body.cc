@@ -60,6 +60,15 @@ tpb_thread_body::tpb_thread_body(block_sptr block,
         gr::thread::set_thread_priority(d->thread, block->thread_priority());
     }
 
+    // Enable EDF scheduling on thread if it was set before fg was started
+    if (block->edf_details().get(0)) {
+        bool edf_enabled, reclaim_bandwidth;
+        uint64_t runtime_ns, deadline_ns, period_ns;
+        std::tie(edf_enabled, runtime_ns, deadline_ns, period_ns, reclaim_bandwidth) = block->edf_details();
+        if (gr::thread::thread_enable_edf(runtime_ns, deadline_ns, period_ns, reclaim_bandwidth))
+            throw std::runtime_error("failed to enable EDF scheduling on a GnuRadio thread...try running as root");
+    }
+
     // make sure our block isn't finished
     block->clear_finished();
 

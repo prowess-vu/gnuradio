@@ -236,6 +236,14 @@ void block_detail::unset_processor_affinity()
     }
 }
 
+int block_detail::enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    if (threaded) {
+        return gr::thread::thread_enable_edf(runtime_ns, deadline_ns, period_ns, reclaim_bandwidth);
+    }
+    return -1;
+}
+
 int block_detail::thread_priority()
 {
     if (threaded) {

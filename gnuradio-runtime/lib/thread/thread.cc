@@ -59,6 +59,12 @@ void thread_bind_to_processor(gr_thread_t thread, const std::vector<int>& mask)
     }
 }
 
+int thread_enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    // Not implemented on Windows
+    return -1;
+}
+
 void thread_unbind() { thread_unbind(get_current_thread_id()); }
 
 void thread_unbind(gr_thread_t thread)
@@ -166,6 +172,12 @@ void thread_bind_to_processor(gr_thread_t thread, const std::vector<int>& mask)
     // Not implemented on OSX
 }
 
+int thread_enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    // Not implemented on OSX
+    return -1;
+}
+
 void thread_unbind()
 {
     // Not implemented on OSX
@@ -206,10 +218,21 @@ void set_thread_name(gr_thread_t thread, std::string name)
 
 #else
 
+#include <sys/syscall.h>
+#include <linux/sched.h>
 #include <pthread.h>
 #include <sys/prctl.h>
 #include <sstream>
 #include <stdexcept>
+#include <unistd.h>
+
+struct sched_attr {
+    uint32_t size, sched_policy;
+    uint64_t sched_flags;
+    int32_t sched_nice;
+    uint32_t sched_priority;
+    uint64_t sched_runtime, sched_deadline, sched_period;
+};
 
 namespace gr {
 namespace thread {
@@ -250,6 +273,21 @@ void thread_bind_to_processor(gr_thread_t thread, const std::vector<int>& mask)
         s << "thread_bind_to_processor failed with error: " << ret << std::endl;
         throw std::runtime_error(s.str());
     }
+}
+
+int thread_enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    struct sched_attr scheduler_attributes = {
+        .size = sizeof(struct sched_attr),
+        .sched_policy = SCHED_DEADLINE,
+        .sched_flags = reclaim_bandwidth ? SCHED_FLAG_RECLAIM : 0,
+        .sched_nice = 0,
+        .sched_priority = 0,
+        .sched_runtime = runtime_ns,
+        .sched_deadline = deadline_ns,
+        .sched_period = period_ns
+    };
+    return syscall(SYS_sched_setattr, 0, &scheduler_attributes, 0);
 }
 
 void thread_unbind() { thread_unbind(get_current_thread_id()); }

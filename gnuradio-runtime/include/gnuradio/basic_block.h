@@ -19,10 +19,12 @@
 #include <gnuradio/sptr_magic.h>
 #include <gnuradio/thread/thread.h>
 #include <boost/thread/condition_variable.hpp>
+#include <cstdint>
 #include <deque>
 #include <functional>
 #include <map>
 #include <string>
+#include <tuple>
 
 #include <gnuradio/rpcregisterhelpers.h>
 
@@ -417,6 +419,10 @@ public:
     virtual void unset_processor_affinity() = 0;
 
     virtual std::vector<int> processor_affinity() = 0;
+
+    virtual int enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth) = 0;
+
+    virtual std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> edf_details() = 0;
 
     virtual void set_log_level(const std::string& level) = 0;
 

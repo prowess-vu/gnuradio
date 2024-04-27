@@ -19,6 +19,7 @@
 #include <gnuradio/runtime_types.h>
 #include <gnuradio/tags.h>
 #include <gnuradio/tpb_detail.h>
+#include <cstdint>
 #include <stdexcept>
 
 namespace gr {
@@ -182,6 +183,11 @@ public:
      * \brief Unset core affinity.
      */
     void unset_processor_affinity();
+    
+    /*!
+     * \brief Set the thread's EDF scheduling details
+     */
+    int enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth);
 
     /*!
      * \brief Get the current thread priority
