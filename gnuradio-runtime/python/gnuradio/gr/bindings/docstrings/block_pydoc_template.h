@@ -258,6 +258,12 @@ static const char* __doc_gr_block_unset_processor_affinity = R"doc()doc";
 static const char* __doc_gr_block_processor_affinity = R"doc()doc";
 
 
+static const char* __doc_gr_block_enable_edf = R"doc()doc";
+
+
+static const char* __doc_gr_block_edf_details = R"doc()doc";
+
+
 static const char* __doc_gr_block_active_thread_priority = R"doc()doc";
 
 

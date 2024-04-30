@@ -90,6 +90,9 @@ static const char* __doc_gr_block_detail_set_processor_affinity = R"doc()doc";
 static const char* __doc_gr_block_detail_unset_processor_affinity = R"doc()doc";
 
 
+static const char* __doc_gr_block_detail_enable_edf = R"doc()doc";
+
+
 static const char* __doc_gr_block_detail_thread_priority = R"doc()doc";
 
 

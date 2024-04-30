@@ -192,6 +192,20 @@ void bind_hier_block2(py::module& m)
              D(hier_block2, processor_affinity))
 
 
+        .def("enable_edf",
+             &hier_block2::enable_edf,
+             py::arg("runtime_ns"),
+             py::arg("deadline_ns"),
+             py::arg("period_ns"),
+             py::arg("reclaim_bandwidth"),
+             D(hier_block2, enable_edf))
+
+
+        .def("edf_details",
+             &hier_block2::edf_details,
+             D(hier_block2, edf_details))
+
+
         .def("set_log_level",
              &hier_block2::set_log_level,
              py::arg("level"),

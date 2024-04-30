@@ -184,6 +184,15 @@ void bind_block_detail(py::module& m)
              D(block_detail, unset_processor_affinity))
 
 
+        .def("enable_edf",
+             &block_details::enable_edf,
+             py::arg("runtime_ns"),
+             py::arg("deadline_ns"),
+             py::arg("period_ns"),
+             py::arg("reclaim_bandwidth"),
+             D(block_detail, enable_edf))
+
+
         .def("thread_priority",
              &block_detail::thread_priority,
              D(block_detail, thread_priority))

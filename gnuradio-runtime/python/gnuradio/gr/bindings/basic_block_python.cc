@@ -260,6 +260,20 @@ void bind_basic_block(py::module& m)
              D(basic_block, processor_affinity))
 
 
+        .def("enable_edf",
+             &basic_block::enable_edf,
+             py::arg("runtime_ns"),
+             py::arg("deadline_ns"),
+             py::arg("period_ns"),
+             py::arg("reclaim_bandwidth"),
+             D(basic_block, enable_edf))
+
+
+        .def("edf_details",
+             &basic_block::edf_details,
+             D(basic_block, edf_details))
+
+
         .def("set_log_level",
              &basic_block::set_log_level,
              py::arg("level"),

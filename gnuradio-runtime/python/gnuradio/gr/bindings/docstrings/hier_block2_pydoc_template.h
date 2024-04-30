@@ -105,6 +105,12 @@ static const char* __doc_gr_hier_block2_unset_processor_affinity = R"doc()doc";
 static const char* __doc_gr_hier_block2_processor_affinity = R"doc()doc";
 
 
+static const char* __doc_gr_hier_block2_enable_edf = R"doc()doc";
+
+
+static const char* __doc_gr_hier_block2_edf_details = R"doc()doc";
+
+
 static const char* __doc_gr_hier_block2_set_log_level = R"doc()doc";
 
 

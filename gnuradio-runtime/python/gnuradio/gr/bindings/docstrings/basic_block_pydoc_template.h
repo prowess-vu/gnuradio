@@ -147,6 +147,12 @@ static const char* __doc_gr_basic_block_unset_processor_affinity = R"doc()doc";
 static const char* __doc_gr_basic_block_processor_affinity = R"doc()doc";
 
 
+static const char* __doc_gr_basic_block_enable_edf = R"doc()doc";
+
+
+static const char* __doc_gr_basic_block_edf_details = R"doc()doc";
+
+
 static const char* __doc_gr_basic_block_set_log_level = R"doc()doc";
 
 
