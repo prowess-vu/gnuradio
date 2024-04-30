@@ -140,6 +140,16 @@ std::vector<int> hier_block2::processor_affinity()
     return d_detail->processor_affinity();
 }
 
+int hier_block2::enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    return d_detail->enable_edf(runtime_ns, deadline_ns, period_ns, reclaim_bandwidth);
+}
+
+std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> hier_block2::edf_details()
+{
+    return d_detail->edf_details();
+}
+
 void hier_block2::set_log_level(const std::string& level)
 {
     d_detail->set_log_level(level);

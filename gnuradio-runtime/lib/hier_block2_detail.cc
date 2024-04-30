@@ -909,6 +909,22 @@ std::vector<int> hier_block2_detail::processor_affinity()
     return tmp[0]->processor_affinity();
 }
 
+int hier_block2_detail::enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth)
+{
+    int retval = 0;
+    basic_block_vector_t tmp = d_fg->calc_used_blocks();
+    for (basic_block_viter_t p = tmp.begin(); p != tmp.end(); p++) {
+        retval |= (*p)->enable_edf(runtime_ns, deadline_ns, period_ns, reclaim_bandwidth);
+    }
+    return retval;
+}
+
+std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> hier_block2_detail::edf_details()
+{
+    basic_block_vector_t tmp = d_fg->calc_used_blocks();
+    return tmp[0]->edf_details();
+}
+
 void hier_block2_detail::set_log_level(const std::string& level)
 {
     basic_block_vector_t tmp = d_fg->calc_used_blocks();

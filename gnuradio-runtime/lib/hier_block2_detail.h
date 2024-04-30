@@ -50,6 +50,9 @@ public:
     void unset_processor_affinity();
     std::vector<int> processor_affinity();
 
+    int enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth);
+    std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> edf_details();
+
     void set_log_level(const std::string& level);
     std::string log_level();
 

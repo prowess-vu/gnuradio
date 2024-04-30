@@ -271,6 +271,10 @@ public:
      */
     std::vector<int> processor_affinity() override;
 
+    int enable_edf(uint64_t runtime_ns, uint64_t deadline_ns, uint64_t period_ns, bool reclaim_bandwidth) override;
+
+    std::tuple<bool, uint64_t, uint64_t, uint64_t, bool> edf_details() override;
+
     /*!
      * \brief Set the logger's output level.
      *

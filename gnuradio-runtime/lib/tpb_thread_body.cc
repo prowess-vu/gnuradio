@@ -62,7 +62,7 @@ tpb_thread_body::tpb_thread_body(block_sptr block,
     }
 
     // Enable EDF scheduling on thread if it was set before fg was started
-    if (block->edf_details().get(0)) {
+    if (std::get<0>(block->edf_details())) {
         bool edf_enabled, reclaim_bandwidth;
         uint64_t runtime_ns, deadline_ns, period_ns;
         std::tie(edf_enabled, runtime_ns, deadline_ns, period_ns, reclaim_bandwidth) = block->edf_details();
