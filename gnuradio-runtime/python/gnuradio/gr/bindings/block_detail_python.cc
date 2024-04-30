@@ -185,7 +185,7 @@ void bind_block_detail(py::module& m)
 
 
         .def("enable_edf",
-             &block_details::enable_edf,
+             &block_detail::enable_edf,
              py::arg("runtime_ns"),
              py::arg("deadline_ns"),
              py::arg("period_ns"),
